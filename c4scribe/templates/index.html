@@ -1,10 +1,10 @@
 
 {% extends "base.html" %}
-{% block title%} GCP Architecture{%endblock%}
+{% block title%} C4scribe{%endblock%}
 
 {% block content %} 
 <div class="container mt-5">
-    <div><h1> GCP Architecture</h1></div>
+    <div><h1> C4scribe</h1></div>
     <div class="row">
         <div class="col-md-6">
             <form method="post" action="{% url 'generate_text' %}">
@@ -13,12 +13,6 @@
                 <button type="submit" class="btn btn-primary">Generate</button>
             </form>
         </div>
-        
- <!-- toDo : uncomment when displaying the design -->
-
-        {% comment %} <div class="col-md-6">
-            <canvas id="outputCanvas" width="400" height="300" style="border:1px solid #000;"></canvas>
-        </div> {% endcomment %}
     </div>
 </div>
 
