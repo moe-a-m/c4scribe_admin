@@ -1,67 +1,74 @@
-## Pioneering Cloud Infrastructure for File Storage using C4 Model and PlantUML
+## Pioneering Cloud File Storage Infrastructure with C4 Model
 
-Following Kirk's directive for a robust file storage system like Dropbox or Google Drive, we'll utilize the C4 model to architect a scalable and reliable cloud infrastructure. The design will be showcased through PlantUML code for clear visualization.
+Kirk, let's break down and build this cloud infrastructure for a robust file storage system similar to Dropbox or Google Drive using the C4 model and PlantUML. We'll focus on the high-level **System Context** and **Container** diagrams to showcase the major components and their interactions.
 
-**C4 Model Levels:**
-
-* **Context:** This top-level view illustrates the overall system and its interactions with external entities.
-* **Containers:** We'll identify the high-level building blocks, such as web servers, application servers, databases, and file storage systems.
-* **Components:** Within each container, specific components like controllers, services, and data access layers will be defined.
-* **Code:** While C4 doesn't explicitly address the code level, the PlantUML diagrams can be linked to code repositories for deeper understanding.
-
-**PlantUML C4 Code Example:**
+**System Context Diagram**
 
 ```plantuml
 @startuml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-title File Storage System - Context Diagram
+title System Context diagram for Cloud File Storage
 
-Person(user, "User")
-System_Ext(internet, "Internet")
-System_Boundary(c1, "File Storage System") {
-    Container(web_app, "Web Application", "Serves user interface and interacts with backend")
-    Container(api, "API", "Provides RESTful interface for file operations")
-    ContainerDb(database, "Database", "Stores metadata and user information")
-    Container(file_storage, "File Storage", "Stores user files securely and reliably")
-}
+Person(user, "User", "Uploads, downloads, and manages files")
+System_Ext(cloud_provider, "Cloud Provider", "Provides cloud computing resources")
+System_Ext(authentication_service, "Authentication Service", "Manages user authentication and authorization")
+System(file_storage_system, "Cloud File Storage System", "Stores and manages user files")
 
-Rel(user, web_app, "Uses")
-Rel(web_app, api, "Uses")
-Rel(api, database, "Reads & Writes")
-Rel(api, file_storage, "Reads & Writes")
-Rel_L(internet, web_app, "Accesses")
+Rel(user, file_storage_system, "Uses")
+Rel(file_storage_system, cloud_provider, "Deploys on")
+Rel(file_storage_system, authentication_service, "Uses")
 
 @enduml
 ```
 
-**Explanation:**
+This diagram shows the main system (File Storage System) and its key external dependencies: Users, the Cloud Provider (e.g., AWS, GCP, Azure), and the Authentication Service. 
 
-* The diagram starts with the `@startuml` and `@enduml` tags.
-* It includes the C4 PlantUML library for necessary shapes and notations.
-* We define a person element `user` representing the users of the system.
-* `internet` represents the external system through which users access the file storage.
-* The main system is enclosed within the `System_Boundary` named "File Storage System".
-* Inside, we define containers like `web_app`, `api`, `database`, and `file_storage` with brief descriptions. 
-* Relationships are established using `Rel` and `Rel_L` notations, indicating how different elements interact.
+**Container Diagram**
 
-**Further Detailing:**
+```plantuml
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-* Each container in the context diagram can be further broken down into components using separate PlantUML diagrams and the `C4_Container` library. 
-* For instance, the `web_app` container could be detailed with components like `UserController`, `FileViewController`, etc., and their interactions.
-* Similarly, the `file_storage` container can be expanded to depict technologies like distributed file systems (e.g., GlusterFS, Ceph) and their internal architecture. 
+title Container diagram for Cloud File Storage System
 
-**Benefits of this Approach:**
+Container(web_app, "Web Application", "Angular", "Provides web interface for file management")
+Container(mobile_app, "Mobile App", "Flutter", "Provides mobile interface for file management")
+ContainerDb(file_database, "File Database", "MongoDB", "Stores file metadata and user information")
+ContainerDb(chunk_storage, "Chunk Storage", "S3/GCS/Azure Blob Storage", "Stores file chunks for scalability and redundancy")
+Container(api_gateway, "API Gateway", "Spring Boot", "Handles API requests and routes them to appropriate services")
+Container(file_processing_service, "File Processing Service", "Java/Golang", "Processes file uploads, downloads, and modifications")
+Container(metadata_service, "Metadata Service", "Java/Golang", "Manages file metadata and access control")
+Container(authentication_service_client, "Auth Service Client", "Java/Golang", "Interfaces with external Authentication Service")
 
-* **Clarity and Communication:** C4 model and PlantUML provide a clear and concise way to visualize the system architecture, making it easier to communicate and collaborate among stakeholders.
-* **Scalability and Flexibility:** The modular design allows for independent scaling of individual components based on demand.
-* **Technology Agnostic:** The initial design remains technology-agnostic, allowing flexibility in choosing specific tools and technologies later in the development process.
+Rel(web_app, api_gateway, "Uses")
+Rel(mobile_app, api_gateway, "Uses")
+Rel(api_gateway, file_processing_service, "Routes requests to")
+Rel(api_gateway, metadata_service, "Routes requests to")
+Rel(file_processing_service, file_database, "Reads/writes data")
+Rel(file_processing_service, chunk_storage, "Stores/retrieves file chunks")
+Rel(metadata_service, file_database, "Reads/writes data")
+Rel(api_gateway, authentication_service_client, "Uses for auth")
+Rel_L(authentication_service_client, authentication_service, "Uses")
 
-**Next Steps:**
+@enduml
+```
 
-* Define detailed container diagrams for each high-level container in the context diagram.
-* Explore and select specific technologies for each container, such as web frameworks, databases, and file storage solutions.
-* Develop component diagrams within each container to further refine the design.
-* Consider integrating deployment diagrams to illustrate the physical infrastructure for running the system.
+This diagram dives deeper, showcasing the containers within our system:
 
-By following this approach, you can build a comprehensive and well-structured cloud infrastructure for your file storage system, ensuring scalability, reliability, and maintainability. Remember to keep the design flexible and adaptable to accommodate future growth and changing requirements. 
+* **Web & Mobile Apps**: Provide user interfaces for interacting with the system.
+* **API Gateway**: Acts as the entry point for all API requests.
+* **File Processing Service**: Handles file upload, download, and modifications.
+* **Metadata Service**: Manages file metadata and access control.
+* **File Database**: Stores file metadata and user information.
+* **Chunk Storage**: Stores file chunks for scalability and redundancy.
+* **Auth Service Client**: Interfaces with an external authentication service.
+
+**Additional Considerations:**
+
+* **Security**: Implement robust security measures, including data encryption, access control, and vulnerability management.
+* **Scalability and Availability**: Design the system to handle increasing loads and ensure high availability through redundancy and failover mechanisms.
+* **Monitoring and Logging**: Monitor system performance and log events for debugging and auditing purposes.
+* **Disaster Recovery**: Have a plan in place for recovering from disasters and ensuring business continuity.
+
+Remember, these diagrams provide a high-level overview. The specific technologies and implementation details may vary based on your specific requirements and preferences.  
