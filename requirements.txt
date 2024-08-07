@@ -3,7 +3,7 @@ asgiref==3.8.1
 cachetools==5.3.3
 certifi==2024.2.2
 charset-normalizer==3.3.2
-Django==5.0.4
+Django==5.0.8
 docstring_parser==0.16
 google-api-core==2.19.0
 google-auth==2.29.0
